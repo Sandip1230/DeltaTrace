@@ -1,0 +1,15 @@
+{
+  "name": "deltatrace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MERN dashboard for autonomous water quality assessment and effluent source identification",
+  "scripts": {
+    "server": "npm run dev --prefix server",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "install-all": "npm install && npm install --prefix server && npm install --prefix client"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
