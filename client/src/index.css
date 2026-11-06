@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ocean-950: #031521;
+  --color-ocean-900: #062235;
+  --color-ocean-800: #0a3350;
+  --color-aqua-300: #7ee8fa;
+  --color-aqua-400: #38d5f0;
+  --color-aqua-500: #14b8d4;
+  --color-gold-400: #f5c542;
+  --color-gold-500: #e8b923;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+html, body, #root { min-height: 100%; }
+
+body {
+  margin: 0;
+  color: #e6f6fb;
+  font-family: var(--font-sans);
+  background:
+    radial-gradient(1100px 600px at 10% -10%, rgba(20, 184, 212, 0.35) 0%, transparent 60%),
+    radial-gradient(900px 500px at 100% 10%, rgba(10, 100, 170, 0.4) 0%, transparent 55%),
+    linear-gradient(160deg, #031521 0%, #062235 50%, #04101b 100%);
+  background-attachment: fixed;
+}
+
+/* ---------- Glassmorphism ---------- */
+.glass {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  border-radius: 1.25rem;
+}
+.glass-strong {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(26px) saturate(160%);
+  -webkit-backdrop-filter: blur(26px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  border-radius: 1.25rem;
+}
+.glass-hover { transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease; }
+.glass-hover:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 14px 40px rgba(20, 184, 212, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+/* ---------- Glow-border input (light runs around border on focus) ---------- */
+@property --glow-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+.glow-field {
+  position: relative;
+  border-radius: 14px;
+  padding: 1.5px;
+  background: rgba(255, 255, 255, 0.12);
+  transition: box-shadow 0.3s ease;
+}
+.glow-field:focus-within {
+  background: conic-gradient(from var(--glow-angle), transparent 0%, var(--glow-color, #f5c542) 14%, transparent 34%, transparent 100%);
+  animation: glow-spin 2.2s linear infinite;
+  box-shadow: 0 0 22px -4px var(--glow-color, #f5c542);
+}
+.glow-field > input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  border-radius: 12.5px;
+  background: #0d1117;
+  padding: 0.85rem 1rem;
+  color: #fff;
+  font: inherit;
+}
+.glow-field > input::placeholder { color: rgba(255, 255, 255, 0.35); }
+@keyframes glow-spin { to { --glow-angle: 360deg; } }
+
+/* ---------- Misc ---------- */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.18); border-radius: 8px; }
