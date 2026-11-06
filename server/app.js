@@ -1,8 +1,12 @@
 import express from "express";
 import cors from "cors";
+import authRoutes from "./routes/authRoutes.js";
 import stationRoutes from "./routes/stationRoutes.js";
 import readingRoutes from "./routes/readingRoutes.js";
 import sourceRoutes from "./routes/sourceRoutes.js";
+import alertRoutes from "./routes/alertRoutes.js";
+import trackerRoutes from "./routes/trackerRoutes.js";
+import { protect } from "./middleware/auth.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
@@ -14,9 +18,12 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok", app: "DeltaTrace API", time: new Date().toISOString() });
 });
 
-app.use("/api/stations", stationRoutes);
-app.use("/api/readings", readingRoutes);
-app.use("/api/sources", sourceRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/stations", protect, stationRoutes);
+app.use("/api/readings", protect, readingRoutes);
+app.use("/api/sources", protect, sourceRoutes);
+app.use("/api/alerts", protect, alertRoutes);
+app.use("/api/tracker", protect, trackerRoutes);
 
 app.use((req, res) => res.status(404).json({ message: "Route not found" }));
 app.use(errorHandler);
