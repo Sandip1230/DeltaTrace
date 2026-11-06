@@ -8,6 +8,8 @@ import alertRoutes from "./routes/alertRoutes.js";
 import trackerRoutes from "./routes/trackerRoutes.js";
 import { protect } from "./middleware/auth.js";
 import { errorHandler } from "./middleware/errorHandler.js";
+import streamRoutes from "./routes/streamRoutes.js";
+import streamRoutes from "./routes/streamRoutes.js";
 
 const app = express();
 
@@ -27,5 +29,6 @@ app.use("/api/tracker", protect, trackerRoutes);
 
 app.use((req, res) => res.status(404).json({ message: "Route not found" }));
 app.use(errorHandler);
+app.use("/api/stream", protect, streamRoutes);
 
 export default app;
