@@ -1,0 +1,89 @@
+@property --nx {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+.fnav {
+  position: fixed;
+  z-index: 40;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  width: min(92vw, 560px);
+  transition: --nx var(--dur, 0.6s) cubic-bezier(0.45, 0.05, 0.55, 0.95);
+}
+
+/* glass bar with a circular notch cut out under the active tab */
+.fnav-bar {
+  display: flex;
+  height: 72px;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  -webkit-mask-image: radial-gradient(circle 38px at var(--nx) 0px, transparent 37px, #000 38.5px);
+  mask-image: radial-gradient(circle 38px at var(--nx) 0px, transparent 37px, #000 38.5px);
+}
+
+/* curved rim drawn around the notch (lower half only) */
+.fnav-ring {
+  position: absolute;
+  top: -38px;
+  left: calc(var(--nx) - 38px);
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 1px solid rgba(126, 232, 250, 0.4);
+  clip-path: inset(50% 0 0 0);
+  pointer-events: none;
+}
+
+.fnav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  padding-bottom: 11px;
+  background: none;
+  border: 0;
+  color: rgba(255, 255, 255, 0.55);
+  font: inherit;
+  cursor: pointer;
+  transition: color 0.25s;
+}
+.fnav-item:hover { color: #fff; }
+.fnav-item.on { color: #7ee8fa; }
+.fnav-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.02em; }
+
+.fnav-icon { position: relative; display: grid; place-items: center; transition: opacity 0.2s, transform 0.3s; }
+.fnav-item.on .fnav-icon { opacity: 0; transform: translateY(10px); }
+
+.fnav-badge {
+  position: absolute; top: -6px; right: -9px; min-width: 16px; height: 16px; padding: 0 4px;
+  display: grid; place-items: center; border-radius: 99px; background: #f87171; color: #fff;
+  font-size: 0.62rem; font-style: normal; font-weight: 700;
+}
+
+.fnav-ball-pos {
+  position: absolute;
+  top: -32px;
+  left: calc(var(--nx) - 28px);
+  width: 56px;
+  height: 56px;
+  pointer-events: none;
+}
+.fnav-ball {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #032033;
+  background: radial-gradient(circle at 30% 25%, #c6f6ff, #38d5f0 45%, #0a7fa0);
+  box-shadow: 0 10px 28px rgba(56, 213, 240, 0.55), inset 0 2px 4px rgba(255, 255, 255, 0.65);
+}
