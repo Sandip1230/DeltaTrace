@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { API_BASE } from "../api/axios";
 
 export default function useLiveStream(onReadings) {
   const [connected, setConnected] = useState(false);
@@ -12,7 +13,7 @@ export default function useLiveStream(onReadings) {
     const token = localStorage.getItem("dt_token");
     if (!token) return;
 
-    const es = new EventSource(`/api/stream?token=${token}`);
+    const es = new EventSource(`${API_BASE}/stream?token=${token}`);
     es.addEventListener("connected", () => setConnected(true));
     es.addEventListener("readings", (e) => cb.current?.(JSON.parse(e.data)));
     es.onerror = () => setConnected(false);

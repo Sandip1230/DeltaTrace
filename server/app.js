@@ -12,7 +12,7 @@ import { errorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: process.env.CLIENT_URL ? process.env.CLIENT_URL.split(",") : true }));
 app.use(express.json());
 
 app.get("/api/health", (req, res) => {

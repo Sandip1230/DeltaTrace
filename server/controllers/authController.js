@@ -26,7 +26,7 @@ const otpResponse = (user, otp) => ({
   message: "OTP sent",
   email: user.email,
   resendIn: RESEND_SECONDS,
-  ...(process.env.NODE_ENV !== "production" && { devOtp: otp }),
+  ...((process.env.NODE_ENV !== "production" || process.env.SHOW_DEV_OTP === "true") && { devOtp: otp }),
 });
 
 export const register = async (req, res) => {
