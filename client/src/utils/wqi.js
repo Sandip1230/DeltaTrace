@@ -15,3 +15,17 @@ export const PARAMS = [
   { key: "temperature", label: "Temp", unit: "°C" },
   { key: "nitrate", label: "Nitrate", unit: "mg/L" },
 ];
+
+// clean-water baselines (must match server/services/wqiService.js)
+export const BASELINE = { ph: 7.5, do: 7, bod: 2, turbidity: 15, tds: 300, temperature: 28, nitrate: 8 };
+
+// slider limits for the what-if simulator: [min, max, step]
+export const LIMITS = {
+  ph: [5.5, 9.5, 0.1],
+  do: [0.5, 9, 0.1],
+  bod: [0.5, 30, 0.5],
+  turbidity: [2, 200, 1],
+  tds: [100, 1200, 10],
+  temperature: [22, 38, 0.5],
+  nitrate: [1, 80, 1],
+};
