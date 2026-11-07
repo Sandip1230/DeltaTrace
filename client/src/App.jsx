@@ -1,17 +1,18 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AppShell from "./components/layout/AppShell";
+import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Stations from "./pages/Stations";
-import Alerts from "./pages/Alerts";
-import Placeholder from "./pages/Placeholder";
 import Tracker from "./pages/Tracker";
+import Alerts from "./pages/Alerts";
 import Reports from "./pages/Reports";
 
 export default function App() {
   return (
     <Routes>
+      <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route element={<ProtectedRoute />}>
         <Route element={<AppShell />}>
@@ -22,7 +23,7 @@ export default function App() {
           <Route path="/reports" element={<Reports />} />
         </Route>
       </Route>
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

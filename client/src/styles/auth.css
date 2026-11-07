@@ -138,3 +138,17 @@
 .glow-field.has-icon > input { padding-left: 2.75rem; }
 .glow-field .field-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: rgba(255, 255, 255, 0.4); z-index: 1; pointer-events: none; transition: color 0.3s; }
 .glow-field:focus-within .field-icon { color: #f5c542; }
+
+.glow-field.has-toggle > input { padding-right: 2.9rem; }
+.field-toggle {
+  position: absolute; right: 0.55rem; top: 50%; transform: translateY(-50%); z-index: 2; display: grid; place-items: center;
+  width: 34px; height: 34px; border: 0; border-radius: 10px; background: transparent; color: rgba(255, 255, 255, 0.45); cursor: pointer; transition: color 0.2s, background 0.2s;
+}
+.field-toggle:hover { color: #f5c542; background: rgba(245, 197, 66, 0.1); }
+
+.auth-back {
+  position: absolute; top: 1.2rem; left: 1.2rem; z-index: 2; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 0.9rem;
+  border-radius: 999px; font-size: 0.82rem; font-weight: 600; color: rgba(255, 255, 255, 0.75); text-decoration: none;
+  border: 1px solid rgba(245, 197, 66, 0.35); background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); transition: all 0.25s;
+}
+.auth-back:hover { color: #f5c542; box-shadow: 0 0 22px -6px rgba(245, 197, 66, 0.8); transform: translateX(-2px); }

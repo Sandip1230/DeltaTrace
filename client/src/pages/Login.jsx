@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { AnimatePresence, animate, motion, useMotionValue } from "framer-motion";
-import { ArrowRight, KeyRound, Loader2, Lock, Mail, ShieldCheck, User } from "lucide-react";
+import { ArrowLeft, ArrowRight, KeyRound, Loader2, Lock, Mail, ShieldCheck, User } from "lucide-react";
+import PasswordInput from "../components/auth/PasswordInput";
 import { useAuth } from "../context/AuthContext";
 import GoldBackdrop from "../components/auth/GoldBackdrop";
 import OtpStage from "../components/auth/OtpStage";
@@ -135,6 +136,7 @@ export default function Login() {
     <>
       <GoldBackdrop />
       <div className="auth-page">
+        <Link to="/" className="auth-back"><ArrowLeft size={15} /> Home</Link>
         <div className="otp-wrap" data-tone={verified ? "green" : "gold"}>
           <div className="otp-card">
             <AnimatePresence mode="wait">
@@ -167,10 +169,11 @@ export default function Login() {
                     <Mail className="field-icon" />
                     <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email address" required />
                   </div>
-                  <div className="glow-field has-icon">
-                    <Lock className="field-icon" />
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required minLength={6} />
-                  </div>
+                  <PasswordInput
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    autoComplete={mode === "login" ? "current-password" : "new-password"}
+                  />
                 </div>
 
                 {error && <p className="auth-error">{error}</p>}
