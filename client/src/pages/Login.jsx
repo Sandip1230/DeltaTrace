@@ -17,8 +17,8 @@ export default function Login() {
   const [step, setStep] = useState("credentials"); // credentials | otp
   const [phase, setPhase] = useState("input"); // input | merging | verifying | verified
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("admin@deltatrace.com"); // demo prefill, clear later
-  const [password, setPassword] = useState("Admin@123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);

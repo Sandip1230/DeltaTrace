@@ -91,3 +91,15 @@ body {
 .leaflet-container a.leaflet-popup-close-button { color: #fff; }
 .leaflet-tooltip { background: rgba(6, 34, 53, 0.95); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: none; }
 .leaflet-tooltip-top:before { border-top-color: rgba(6, 34, 53, 0.95); }
+
+/* ---------- Print (Reports) ---------- */
+.print-only { display: none; }
+@media print {
+  header, .fnav, .no-print { display: none !important; }
+  .print-only { display: block !important; }
+  body { background: #fff !important; color: #000 !important; }
+  .glass, .glass-strong { background: #fff !important; border: 1px solid #ccc !important; box-shadow: none !important; backdrop-filter: none !important; }
+  .glass *, .print-only * { color: #000 !important; }
+  main { padding-bottom: 0 !important; }
+  tr { break-inside: avoid; }
+}

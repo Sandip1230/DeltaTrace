@@ -7,6 +7,7 @@ import Stations from "./pages/Stations";
 import Alerts from "./pages/Alerts";
 import Placeholder from "./pages/Placeholder";
 import Tracker from "./pages/Tracker";
+import Reports from "./pages/Reports";
 
 export default function App() {
   return (
@@ -18,7 +19,7 @@ export default function App() {
           <Route path="/stations" element={<Stations />} />
           <Route path="/tracker" element={<Tracker />} />
           <Route path="/alerts" element={<Alerts />} />
-          <Route path="/reports" element={<Placeholder title="Reports" />} />
+          <Route path="/reports" element={<Reports />} />
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/dashboard" replace />} />

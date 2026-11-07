@@ -29,3 +29,6 @@ export const LIMITS = {
   temperature: [22, 38, 0.5],
   nitrate: [1, 80, 1],
 };
+
+export const getStatus = (w) =>
+  w <= 25 ? "Excellent" : w <= 50 ? "Good" : w <= 75 ? "Poor" : w <= 100 ? "Very Poor" : "Unfit";

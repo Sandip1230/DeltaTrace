@@ -1,4 +1,3 @@
-
 # DeltaTrace
 
 **Autonomous Water Quality Assessment & Effluent Source Identification**
@@ -116,7 +115,7 @@ All routes except `/api/auth/*` and `/api/health` need `Authorization: Bearer <t
 - [X] Glass UI, OTP login, floating notch nav, dashboard
 - [X] Stations page (map), Alerts page
 - [X] Source Tracker page
-- [ ] Reports page (history and CSV export)
+- [X] Reports page (history and CSV export)
 - [ ] Final polish, screenshots, report
 
 ## Team
