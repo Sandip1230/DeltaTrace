@@ -3,6 +3,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AppShell from "./components/layout/AppShell";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import Stations from "./pages/Stations";
+import Alerts from "./pages/Alerts";
 import Placeholder from "./pages/Placeholder";
 
 export default function App() {
@@ -12,9 +14,9 @@ export default function App() {
       <Route element={<ProtectedRoute />}>
         <Route element={<AppShell />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/stations" element={<Placeholder title="Stations" />} />
+          <Route path="/stations" element={<Stations />} />
           <Route path="/tracker" element={<Placeholder title="Source Tracker" />} />
-          <Route path="/alerts" element={<Placeholder title="Alerts" />} />
+          <Route path="/alerts" element={<Alerts />} />
           <Route path="/reports" element={<Placeholder title="Reports" />} />
         </Route>
       </Route>
