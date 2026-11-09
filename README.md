@@ -45,11 +45,14 @@ deltatrace/
 # 1. Install everything
 npm run install-all
 
+
 # 2. Configure the server
 cp server/.env.example server/.env   # then fill in the values below
 
+
 # 3. Seed the database (stations, sources, readings, alerts, demo users)
 npm run seed --prefix server
+
 
 # 4. Run client and server together
 npm run dev
