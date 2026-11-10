@@ -123,4 +123,4 @@ All routes except `/api/auth/*` and `/api/health` need `Authorization: Bearer <t
 
 ## Team
 
-Sandip Maitra, Sandeep Yadav, Sangeeta Biswas, Sanghita Roy, Sarthak Patra
+*Sandip Maitra, Sandeep Yadav, Sangeeta Biswas, Sanghita Roy, Sarthak Patra*
