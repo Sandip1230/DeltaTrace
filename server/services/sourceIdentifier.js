@@ -1,6 +1,7 @@
 import { BASELINE } from "./wqiService.js";
 
 const PARAMS = Object.keys(BASELINE);
+const RADIUS_KM = 150;
 
 const deviationOf = (reading) =>
   Object.fromEntries(PARAMS.map((p) => [p, ((reading[p] ?? BASELINE[p]) - BASELINE[p]) / BASELINE[p]]));
@@ -23,13 +24,24 @@ function haversineKm(a, b) {
 
 export function identifySources(reading, station, sources) {
   const deviation = deviationOf(reading);
-  const magnitude = Math.sqrt(PARAMS.reduce((s, p) => s + deviation[p] ** 2, 0));
 
-  const results = sources
-    .map((src) => {
+  // only "adverse" deviations count towards pollution (low DO, high everything else, pH either way)
+  const adverse = (p) => {
+    const d = deviation[p];
+    return p === "do" ? Math.max(-d, 0) : p === "ph" ? Math.abs(d) : Math.max(d, 0);
+  };
+  const magnitude = Math.sqrt(PARAMS.reduce((s, p) => s + adverse(p) ** 2, 0));
+
+  const withDist = sources
+    .map((src) => ({ src, distanceKm: haversineKm(station.location, src.location) }))
+    .sort((a, b) => a.distanceKm - b.distanceKm);
+  const near = withDist.filter((x) => x.distanceKm <= RADIUS_KM);
+  const pool = near.length >= 3 ? near : withDist.slice(0, 3);
+
+  const results = pool
+    .map(({ src, distanceKm }) => {
       const similarity = cosine(deviation, src.signature);
-      const distanceKm = haversineKm(station.location, src.location);
-      const proximity = 1 / (1 + distanceKm / 10);
+      const proximity = 1 / (1 + distanceKm / 40);
       const score = Math.max(similarity, 0) * 0.75 + proximity * 0.25;
 
       const matchedParams = Object.keys(src.signature).filter(

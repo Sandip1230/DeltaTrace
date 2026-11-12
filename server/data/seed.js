@@ -20,12 +20,13 @@ const seed = async () => {
     Station.deleteMany(), Reading.deleteMany(), Source.deleteMany(), Alert.deleteMany(), User.deleteMany(),
   ]);
 
-  const createdStations = await Station.insertMany(stations);
+  const created = await Station.insertMany(stations);
   await Source.insertMany(sources);
 
   const allReadings = [];
-  createdStations.forEach((st, idx) => {
-    generateReadings(st.code, idx + 1).forEach((r) => {
+  created.forEach((st, i) => {
+    const meta = stations.find((s) => s.code === st.code);
+    generateReadings(meta, i + 1).forEach((r) => {
       allReadings.push({ ...r, station: st._id, ...calculateWQI(r) });
     });
   });
@@ -36,8 +37,8 @@ const seed = async () => {
 
   const alerts = await syncAlerts();
 
-  console.log(`Seeded ${createdStations.length} stations, ${sources.length} sources, ${allReadings.length} readings`);
-  console.log(`Alerts: ${alerts.created} created | Users: admin@deltatrace.com / Admin@123`);
+  console.log(`Seeded ${created.length} stations, ${sources.length} sources, ${allReadings.length} readings`);
+  console.log(`Alerts: ${alerts.created} created | Login: admin@deltatrace.com / Admin@123`);
   process.exit(0);
 };
 

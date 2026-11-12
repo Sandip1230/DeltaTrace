@@ -2,8 +2,11 @@ import mongoose from "mongoose";
 
 const sourceSchema = new mongoose.Schema({
   name: { type: String, required: true },
+  kind: String,
   type: { type: String, required: true },
   description: String,
+  state: String,
+  region: { type: String, index: true },
   location: {
     lat: { type: Number, required: true },
     lng: { type: Number, required: true },

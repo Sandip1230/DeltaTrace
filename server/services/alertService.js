@@ -45,33 +45,45 @@ export async function syncAlerts() {
     { $replaceRoot: { newRoot: "$doc" } },
   ]);
 
-  let created = 0, updated = 0, resolved = 0;
+  const open = await Alert.find({ status: { $in: ["open", "acknowledged"] } });
+  const byStation = new Map();
+  for (const a of open) {
+    const k = String(a.station);
+    if (!byStation.has(k)) byStation.set(k, []);
+    byStation.get(k).push(a);
+  }
+
+  const toCreate = [];
+  const saves = [];
+  let updated = 0, resolved = 0;
 
   for (const r of latest) {
     const breaches = evaluateReading(r);
-    const open = await Alert.find({ station: r.station, status: { $in: ["open", "acknowledged"] } });
-    const breachedParams = new Set(breaches.map((b) => b.parameter));
+    const mine = byStation.get(String(r.station)) || [];
+    const breached = new Set(breaches.map((b) => b.parameter));
 
     for (const b of breaches) {
-      const existing = open.find((a) => a.parameter === b.parameter);
+      const existing = mine.find((a) => a.parameter === b.parameter);
       if (existing) {
         Object.assign(existing, { ...b, reading: r._id });
-        await existing.save();
+        saves.push(existing.save());
         updated++;
       } else {
-        await Alert.create({ station: r.station, reading: r._id, ...b });
-        created++;
+        toCreate.push({ station: r.station, reading: r._id, ...b });
       }
     }
 
-    for (const a of open) {
-      if (!breachedParams.has(a.parameter)) {
+    for (const a of mine) {
+      if (!breached.has(a.parameter)) {
         a.status = "resolved";
         a.resolvedAt = new Date();
-        await a.save();
+        saves.push(a.save());
         resolved++;
       }
     }
   }
-  return { created, updated, resolved };
+
+  if (toCreate.length) await Alert.insertMany(toCreate);
+  await Promise.all(saves);
+  return { created: toCreate.length, updated, resolved };
 }

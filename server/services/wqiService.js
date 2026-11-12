@@ -1,12 +1,12 @@
 // Weighted arithmetic WQI. Higher WQI = worse quality.
 // ideal = value in pure water, std = permissible limit (BIS/WHO)
 const STANDARDS = {
-  ph: { ideal: 7, std: 8.5 },
-  do: { ideal: 14.6, std: 5 },
-  bod: { ideal: 0, std: 3 },
-  turbidity: { ideal: 0, std: 5 },
-  tds: { ideal: 0, std: 500 },
-  nitrate: { ideal: 0, std: 45 },
+  ph: { ideal: 7, std: 9.0 },
+  do: { ideal: 10, std: 4 },
+  bod: { ideal: 0, std: 8 },
+  turbidity: { ideal: 0, std: 100 },
+  tds: { ideal: 0, std: 1000 },
+  nitrate: { ideal: 0, std: 50 },
 };
 
 export const BASELINE = {

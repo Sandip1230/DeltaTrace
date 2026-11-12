@@ -2,11 +2,15 @@ import Station from "../models/Station.js";
 import Reading from "../models/Reading.js";
 import Source from "../models/Source.js";
 import { identifySources } from "../services/sourceIdentifier.js";
+import { scopeFilter } from "../utils/scope.js";
 
 const latestOf = (stationId) => Reading.findOne({ station: stationId }).sort({ timestamp: -1 }).lean();
 
 export const analyseAll = async (req, res) => {
-  const [stations, sources] = await Promise.all([Station.find({ isActive: true }).lean(), Source.find().lean()]);
+  const [stations, sources] = await Promise.all([
+  Station.find({ isActive: true, ...scopeFilter(req.query) }).lean(),
+  Source.find().lean(),
+]);
   const out = [];
 
   for (const st of stations) {

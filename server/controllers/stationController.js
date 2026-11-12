@@ -1,8 +1,9 @@
 import Station from "../models/Station.js";
 import Reading from "../models/Reading.js";
+import { scopeFilter } from "../utils/scope.js";
 
 export const getStations = async (req, res) => {
-  const stations = await Station.find({ isActive: true }).lean();
+  const stations = await Station.find({ isActive: true, ...scopeFilter(req.query) }).lean();
   res.json(stations);
 };
 
