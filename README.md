@@ -14,6 +14,7 @@ A MERN-stack dashboard that monitors river and canal stations, computes a Water 
 | -------------- | -------------------------------------------------------------------------------------------- |
 | Secure login   | Email + password, then 4-digit OTP, then JWT session (animated OTP UI)                       |
 | Dashboard      | Average WQI gauge, stat cards, 7-day parameter trends, WQI by station, live pollution events |
+| India overview | Pan-India map, region and state rankings, hotspots and upstream-to-downstream river profiles |
 | Stations       | Dark map of stations and suspected sources, station detail, searchable table                 |
 | Alerts         | Threshold-based warnings and critical alerts with acknowledge and resolve workflow           |
 | Source Tracker | Matches a pollutant signature to likely effluent sources (cosine similarity plus distance)   |
@@ -89,6 +90,10 @@ In development the OTP is shown on the login screen ("Dev OTP") and printed in t
 
 **Source identification.** The latest reading is converted to a deviation vector from clean-water baselines. Each known source has a signature vector. Score = 75% cosine similarity + 25% proximity (haversine distance). Results show confidence, distance, and matched parameters.
 
+**Data note.** All readings, station values and source locations are simulated for the academic demo (hardcoded dataset plus a live stream). They are not real CPCB / NWMP measurements. Replacing the data layer with a real feed is future work.
+
+**Scope.** Every list endpoint accepts `?region=North|South|East|West|Central|Northeast`, and `GET /api/india` returns the national summary.
+
 ## API Overview
 
 All routes except `/api/auth/*` and `/api/health` need `Authorization: Bearer <token>`.
@@ -119,6 +124,7 @@ All routes except `/api/auth/*` and `/api/health` need `Authorization: Bearer <t
 - [X] Stations page (map), Alerts page
 - [X] Source Tracker page
 - [X] Reports page (history and CSV export)
+- [x] Pan-India extension (42 stations, 37 sources, region scope, India overview)
 - [X] Final polish, screenshots, report
 
 ## Team

@@ -5,6 +5,7 @@ import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "rec
 import { Factory, Search } from "lucide-react";
 import api from "../api/axios";
 import { useLive } from "../context/LiveContext";
+import { useScope } from "../context/ScopeContext";
 import StatusBadge from "../components/ui/StatusBadge";
 import { PARAMS, STATUS_COLORS } from "../utils/wqi";
 import { timeAgo } from "../utils/format";
@@ -12,13 +13,14 @@ import { timeAgo } from "../utils/format";
 function FlyTo({ lat, lng }) {
   const map = useMap();
   useEffect(() => {
-    if (lat && lng) map.flyTo([lat, lng], 12, { duration: 0.8 });
+    if (lat && lng) map.flyTo([lat, lng], 10, { duration: 0.8 });
   }, [lat, lng, map]);
   return null;
 }
 
 export default function Stations() {
   const { tick } = useLive();
+  const { params } = useScope();
   const [latest, setLatest] = useState([]);
   const [sources, setSources] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
@@ -27,15 +29,15 @@ export default function Stations() {
   const [q, setQ] = useState("");
 
   useEffect(() => {
-    api.get("/sources").then((r) => setSources(r.data));
-  }, []);
+    api.get("/sources", { params }).then((r) => setSources(r.data));
+  }, [params]);
 
   useEffect(() => {
-    api.get("/readings/latest").then((r) => {
+    api.get("/readings/latest", { params }).then((r) => {
       setLatest(r.data);
-      setSelectedId((p) => p || r.data[0]?.station._id);
+      setSelectedId((p) => (r.data.some((x) => x.station._id === p) ? p : r.data[0]?.station._id));
     });
-  }, [tick]);
+  }, [tick, params]);
 
   useEffect(() => {
     if (!selectedId) return;
@@ -47,7 +49,7 @@ export default function Stations() {
   const selected = latest.find((l) => l.station._id === selectedId);
   const filtered = useMemo(
     () =>
-      latest.filter((l) => `${l.station.name} ${l.station.waterBody}`.toLowerCase().includes(q.toLowerCase())),
+      latest.filter((l) => `${l.station.name} ${l.station.waterBody} ${l.station.state}`.toLowerCase().includes(q.toLowerCase())),
     [latest, q]
   );
 
@@ -73,7 +75,7 @@ export default function Stations() {
       <div className="grid gap-4 lg:grid-cols-3">
         {/* Map */}
         <div className="glass map-wrap lg:col-span-2" style={{ height: 430 }}>
-          <MapContainer center={[22.55, 88.33]} zoom={11} style={{ height: "100%", width: "100%" }}>
+          <MapContainer center={[22.8, 80]} zoom={5} style={{ height: "100%", width: "100%" }}>
             <TileLayer
               url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
               attribution="&copy; OpenStreetMap &copy; CARTO"
@@ -190,6 +192,7 @@ export default function Stations() {
               <tr>
                 <th className="pb-3">Station</th>
                 <th className="pb-3">Water body</th>
+                <th className="pb-3">State</th>
                 <th className="pb-3">Type</th>
                 <th className="pb-3">WQI</th>
                 <th className="pb-3">Status</th>
@@ -205,6 +208,7 @@ export default function Stations() {
                 >
                   <td className="py-3 font-semibold">{l.station.name}</td>
                   <td className="py-3 text-white/70">{l.station.waterBody}</td>
+                  <td className="py-3 text-white/70">{l.station.state}</td>
                   <td className="py-3 capitalize text-white/70">{l.station.type}</td>
                   <td className="py-3 font-bold" style={{ color: STATUS_COLORS[l.status] }}>{l.wqi}</td>
                   <td className="py-3"><StatusBadge status={l.status} /></td>
@@ -212,7 +216,7 @@ export default function Stations() {
                 </tr>
               ))}
               {!filtered.length && (
-                <tr><td colSpan={6} className="py-6 text-center text-white/50">No stations match your search.</td></tr>
+                <tr><td colSpan={7} className="py-6 text-center text-white/50">No stations match your search.</td></tr>
               )}
             </tbody>
           </table>

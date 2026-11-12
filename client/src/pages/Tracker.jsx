@@ -6,6 +6,7 @@ import "leaflet/dist/leaflet.css";
 import { CheckCircle2, Crosshair, FlaskConical, MapPin, RotateCcw, Ruler, Target } from "lucide-react";
 import api from "../api/axios";
 import { useLive } from "../context/LiveContext";
+import { useScope } from "../context/ScopeContext";
 import StatusBadge from "../components/ui/StatusBadge";
 import { BASELINE, LIMITS, PARAMS, STATUS_COLORS } from "../utils/wqi";
 
@@ -28,6 +29,7 @@ function FitBounds({ points }) {
 
 export default function Tracker() {
   const { tick } = useLive();
+  const { params: scopeParams } = useScope();
   const [params, setParams] = useSearchParams();
 
   const [overview, setOverview] = useState([]);
@@ -45,8 +47,8 @@ export default function Tracker() {
   }, []);
 
   useEffect(() => {
-    api.get("/tracker").then((r) => setOverview(r.data));
-  }, [tick]);
+    api.get("/tracker", { params: scopeParams }).then((r) => setOverview(r.data));
+  }, [tick, scopeParams]);
 
   useEffect(() => {
     if (!selectedId) return;
@@ -116,7 +118,7 @@ export default function Tracker() {
 
       <div className="grid gap-4 lg:grid-cols-[300px_1fr]">
         {/* Station list */}
-        <div className="space-y-3">
+        <div className="max-h-[75vh] space-y-3 overflow-y-auto pr-1">
           {overview.map((o) => {
             const on = o.station._id === selectedId;
             return (

@@ -1,11 +1,12 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion, useAnimationControls } from "framer-motion";
-import { Bell, FileText, LayoutDashboard, MapPin, Radar } from "lucide-react";
+import { Bell, FileText, Globe, LayoutDashboard, MapPin, Radar } from "lucide-react";
 import "../../styles/nav.css";
 
 export const TABS = [
   { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { path: "/india", label: "India", icon: Globe },
   { path: "/stations", label: "Stations", icon: MapPin },
   { path: "/tracker", label: "Tracker", icon: Radar },
   { path: "/alerts", label: "Alerts", icon: Bell },

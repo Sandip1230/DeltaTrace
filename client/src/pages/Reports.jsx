@@ -3,6 +3,7 @@ import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, ResponsiveContaine
 import { ChevronLeft, ChevronRight, Download, FileText, Printer } from "lucide-react";
 import api from "../api/axios";
 import { useLive } from "../context/LiveContext";
+import { useScope } from "../context/ScopeContext";
 import StatCard from "../components/ui/StatCard";
 import StatusBadge from "../components/ui/StatusBadge";
 import { STATUS_COLORS, getStatus } from "../utils/wqi";
@@ -23,6 +24,7 @@ const selectCls = "rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-s
 
 export default function Reports() {
   const { tick } = useLive();
+  const { params } = useScope();
   const [stations, setStations] = useState([]);
   const [station, setStation] = useState("all");
   const [range, setRange] = useState(7);
@@ -31,15 +33,17 @@ export default function Reports() {
   const [page, setPage] = useState(0);
 
   useEffect(() => {
-    api.get("/stations").then((r) => setStations(r.data));
-  }, []);
+    api.get("/stations", { params }).then((r) => setStations(r.data));
+    setStation("all");
+  }, [params]);
 
   useEffect(() => {
     const from = new Date(Date.now() - range * 864e5).toISOString();
     const qs = new URLSearchParams({ from, limit: 3000 });
     if (station !== "all") qs.set("station", station);
+    else if (params.region) qs.set("region", params.region);
     api.get(`/readings?${qs}`).then((r) => setRows(r.data));
-  }, [station, range, tick]);
+  }, [station, range, tick, params]);
 
   useEffect(() => setPage(0), [station, range, status]);
 

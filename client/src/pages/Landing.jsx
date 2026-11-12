@@ -36,6 +36,9 @@ const SIGS = [
   { name: "Textile dyeing", up: ["Turbidity", "TDS", "pH", "BOD"], down: [] },
   { name: "Agricultural runoff", up: ["Nitrate", "Turbidity", "BOD"], down: [] },
   { name: "Thermal discharge", up: ["Temperature", "TDS"], down: ["DO"] },
+  { name: "Chemical industry", up: ["TDS", "Nitrate", "BOD", "Turbidity"], down: ["pH"] },
+  { name: "Sugar & distillery", up: ["BOD", "Turbidity"], down: ["DO", "pH"] },
+  { name: "Mining & ore washing", up: ["Turbidity", "TDS"], down: ["pH"] },
 ];
 
 const TECH = ["MongoDB", "Express", "React", "Node.js", "Tailwind CSS", "Framer Motion", "Recharts", "Leaflet", "JWT Auth", "Server-Sent Events"];
@@ -162,7 +165,7 @@ export default function Landing() {
             </motion.div>
 
             <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 font-mono text-xs uppercase tracking-widest text-white/45">
-              <span>7 parameters</span><span>6 stations</span><span>5 source fingerprints</span>
+              <span>7 parameters</span><span>42 stations</span><span>6 regions</span><span>8 source fingerprints</span>
             </div>
           </div>
 
@@ -176,7 +179,7 @@ export default function Landing() {
       <section className="mx-auto max-w-6xl px-4">
         <Reveal>
           <div className="glass grid grid-cols-2 gap-6 p-6 text-center sm:p-8 lg:grid-cols-4">
-            {[[7, "Water parameters", 0, ""], [6, "Monitoring stations", 0, ""], [5, "Source fingerprints", 0, ""], [15, "Seconds per live update", 0, "s"]].map(([n, l, d, s]) => (
+            {[[7, "Water parameters", 0, ""], [42, "Stations across India", 0, ""], [8, "Source fingerprints", 0, ""], [15, "Seconds per live update", 0, "s"]].map(([n, l, d, s]) => (
               <div key={l}>
                 <p className="text-4xl font-extrabold text-aqua-300 sm:text-5xl"><CountUp to={n} decimals={d} suffix={s} /></p>
                 <p className="mt-1 font-mono text-[11px] uppercase tracking-widest text-white/50">{l}</p>

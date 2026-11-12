@@ -4,6 +4,7 @@ import { AlertTriangle, Check, CheckCircle2, Eye, RefreshCw, ShieldAlert } from 
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import { useLive } from "../context/LiveContext";
+import { useScope } from "../context/ScopeContext";
 import StatCard from "../components/ui/StatCard";
 import { fmtTime, timeAgo } from "../utils/format";
 
@@ -17,6 +18,7 @@ const SEV = ["all", "critical", "warning"];
 export default function Alerts() {
   const { user } = useAuth();
   const { tick } = useLive();
+  const { params } = useScope();
   const nav = useNavigate();
 
   const [alerts, setAlerts] = useState([]);
@@ -24,7 +26,7 @@ export default function Alerts() {
   const [sev, setSev] = useState("all");
   const [busy, setBusy] = useState(false);
 
-  const load = useCallback(() => api.get("/alerts?limit=200").then((r) => setAlerts(r.data)), []);
+  const load = useCallback(() => api.get("/alerts?limit=200", { params }).then((r) => setAlerts(r.data)), [params]);
   useEffect(() => {
     load();
   }, [load, tick]);

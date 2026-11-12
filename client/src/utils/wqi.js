@@ -26,7 +26,7 @@ export const LIMITS = {
   bod: [0.5, 30, 0.5],
   turbidity: [2, 200, 1],
   tds: [100, 1200, 10],
-  temperature: [22, 38, 0.5],
+  temperature: [5, 40, 0.5],
   nitrate: [1, 80, 1],
 };
 

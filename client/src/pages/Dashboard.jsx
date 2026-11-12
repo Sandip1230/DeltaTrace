@@ -6,6 +6,7 @@ import { Activity, ArrowRight, Bell, Crosshair, Droplets, Flame, MapPin, Zap } f
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import { useLive } from "../context/LiveContext";
+import { useScope } from "../context/ScopeContext";
 import StatCard from "../components/ui/StatCard";
 import StatusBadge from "../components/ui/StatusBadge";
 import HudCorners from "../components/ui/HudCorners";
@@ -57,6 +58,7 @@ export default function Dashboard() {
   const { user } = useAuth();
   const { tick, events, lastUpdate, connected } = useLive();
   const navigate = useNavigate();
+  const { region, params } = useScope();
 
   const [summary, setSummary] = useState(null);
   const [latest, setLatest] = useState([]);
@@ -68,17 +70,17 @@ export default function Dashboard() {
 
   const load = useCallback(async () => {
     const [s, l, a, t] = await Promise.all([
-      api.get("/readings/summary"),
-      api.get("/readings/latest"),
-      api.get("/alerts/stats"),
-      api.get("/tracker"),
+      api.get("/readings/summary", { params }),
+      api.get("/readings/latest", { params }),
+      api.get("/alerts/stats", { params }),
+      api.get("/tracker", { params }),
     ]);
     setSummary(s.data);
     setLatest(l.data);
     setAlertStats(a.data);
     setTracker(t.data);
-    setSelected((prev) => prev || l.data[0]?.station._id);
-  }, []);
+    setSelected((prev) => (l.data.some((x) => x.station._id === prev) ? prev : l.data[0]?.station._id));
+  }, [params]);
 
   useEffect(() => {
     load();
@@ -94,7 +96,11 @@ export default function Dashboard() {
     () => series.map((r) => ({ t: new Date(r.timestamp).toLocaleString([], { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" }), v: r[metric] })),
     [series, metric]
   );
-  const barData = latest.map((r) => ({ name: r.station.code, full: r.station.name, wqi: r.wqi, color: STATUS_COLORS[r.status] }));
+  const barData = [...latest]
+    .sort((a, b) => b.wqi - a.wqi)
+    .slice(0, 12)
+    .map((r) => ({ name: r.station.code, full: r.station.name, wqi: r.wqi, color: STATUS_COLORS[r.status] }));
+  const worstSix = [...latest].sort((a, b) => b.wqi - a.wqi).slice(0, 6);
   const selectedStation = latest.find((l) => l.station._id === selected);
   const suspects = useMemo(
     () => tracker.filter((t) => t.significant && t.topSuspect).sort((a, b) => b.topSuspect.confidence - a.topSuspect.confidence).slice(0, 4),
@@ -135,7 +141,7 @@ export default function Dashboard() {
       {/* Stat cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard delay={0.1} icon={Droplets} label="Average WQI" value={summary.avgWqi} decimals={1} sub="Lower is cleaner" accent={avgColor} />
-        <StatCard delay={0.18} icon={MapPin} label="Stations" value={summary.totalStations} sub="Rivers and canals" />
+        <StatCard delay={0.18} icon={MapPin} label="Stations" value={summary.totalStations} sub={region === "all" ? "Across India" : `${region} region`} />
         <StatCard delay={0.26} icon={Bell} label="Active alerts" value={alertStats.total} sub={`${alertStats.critical} critical · ${alertStats.warning} warning`} accent="#f87171" />
         <StatCard delay={0.34} icon={Flame} label="Most polluted" value={summary.worst.name} sub={`WQI ${summary.worst.wqi}`} accent="#fb923c" />
       </div>
@@ -192,7 +198,7 @@ export default function Dashboard() {
       {/* Bar + live events */}
       <motion.div variants={item} className="grid gap-4 lg:grid-cols-3">
         <div className="glass glass-hover p-6 lg:col-span-2">
-          <h3 className="mb-4 font-semibold">WQI by station</h3>
+          <h3 className="mb-4 font-semibold">Highest WQI stations</h3>
           <div className="h-56">
             <ResponsiveContainer>
               <BarChart data={barData}>
@@ -267,9 +273,9 @@ export default function Dashboard() {
 
       {/* Stations */}
       <motion.div variants={item}>
-        <h3 className="mb-3 font-semibold">Stations</h3>
+        <h3 className="mb-3 font-semibold">Most polluted stations</h3>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {latest.map((r) => {
+          {worstSix.map((r) => {
             const on = r.station._id === selected;
             const c = STATUS_COLORS[r.status];
             return (

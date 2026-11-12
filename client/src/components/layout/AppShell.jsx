@@ -3,10 +3,12 @@ import { Outlet, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import api from "../../api/axios";
 import { LiveProvider, useLive } from "../../context/LiveContext";
+import { ScopeProvider } from "../../context/ScopeContext";
 import useSpotlight from "../../hooks/useSpotlight";
 import CyberBackground from "../ui/CyberBackground";
 import BackToTop, { ScrollProgress } from "../ui/BackToTop";
 import Header from "./Header";
+import ScopeBar from "./ScopeBar";
 import SideMenu from "./SideMenu";
 import FloatingNav from "./FloatingNav";
 
@@ -32,6 +34,7 @@ function Shell() {
       <ScrollProgress />
       <Header menuOpen={menu} onMenu={() => setMenu((m) => !m)} />
       <SideMenu open={menu} onClose={() => setMenu(false)} alertCount={alertCount} />
+      {!pathname.startsWith("/india") && <ScopeBar />}
 
       <main className="mx-auto max-w-6xl px-3 pb-40 pt-6 sm:px-4">
         <motion.div key={pathname} initial={{ opacity: 0, y: 14, filter: "blur(6px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} transition={{ duration: 0.4 }}>
@@ -48,7 +51,9 @@ function Shell() {
 export default function AppShell() {
   return (
     <LiveProvider>
-      <Shell />
+      <ScopeProvider>
+        <Shell />
+      </ScopeProvider>
     </LiveProvider>
   );
 }

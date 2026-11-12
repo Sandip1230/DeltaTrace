@@ -8,6 +8,7 @@ import Stations from "./pages/Stations";
 import Tracker from "./pages/Tracker";
 import Alerts from "./pages/Alerts";
 import Reports from "./pages/Reports";
+import India from "./pages/India";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
       <Route element={<ProtectedRoute />}>
         <Route element={<AppShell />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/india" element={<India />} />
           <Route path="/stations" element={<Stations />} />
           <Route path="/tracker" element={<Tracker />} />
           <Route path="/alerts" element={<Alerts />} />
