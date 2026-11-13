@@ -10,6 +10,7 @@ import { useScope } from "../context/ScopeContext";
 import StatCard from "../components/ui/StatCard";
 import StatusBadge from "../components/ui/StatusBadge";
 import HudCorners from "../components/ui/HudCorners";
+import DashboardLoader from "../components/ui/DashboardLoader";
 import WqiGauge from "../components/charts/WqiGauge";
 import { PARAMS, STATUS_COLORS, getStatus } from "../utils/wqi";
 
@@ -44,16 +45,6 @@ function Ring({ value, color }) {
   );
 }
 
-function Skeleton() {
-  return (
-    <div className="space-y-6">
-      <div className="skeleton h-36" />
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{[0, 1, 2, 3].map((i) => <div key={i} className="skeleton h-32" />)}</div>
-      <div className="grid gap-4 lg:grid-cols-3"><div className="skeleton h-72" /><div className="skeleton h-72 lg:col-span-2" /></div>
-    </div>
-  );
-}
-
 export default function Dashboard() {
   const { user } = useAuth();
   const { tick, events, lastUpdate, connected } = useLive();
@@ -67,19 +58,33 @@ export default function Dashboard() {
   const [selected, setSelected] = useState(null);
   const [metric, setMetric] = useState("wqi");
   const [series, setSeries] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
+  const [rotationComplete, setRotationComplete] = useState(false);
+  const [introComplete, setIntroComplete] = useState(false);
+
+  const handleFocusComplete = useCallback(() => setRotationComplete(true), []);
+  const handleLoaderComplete = useCallback(() => setIntroComplete(true), []);
 
   const load = useCallback(async () => {
-    const [s, l, a, t] = await Promise.all([
-      api.get("/readings/summary", { params }),
-      api.get("/readings/latest", { params }),
-      api.get("/alerts/stats", { params }),
-      api.get("/tracker", { params }),
-    ]);
-    setSummary(s.data);
-    setLatest(l.data);
-    setAlertStats(a.data);
-    setTracker(t.data);
-    setSelected((prev) => (l.data.some((x) => x.station._id === prev) ? prev : l.data[0]?.station._id));
+    try {
+      const [s, l, a, t] = await Promise.all([
+        api.get("/readings/summary", { params }),
+        api.get("/readings/latest", { params }),
+        api.get("/alerts/stats", { params }),
+        api.get("/tracker", { params }),
+      ]);
+      setLoadError(null);
+      setSummary(s.data);
+      setLatest(l.data);
+      setAlertStats(a.data);
+      setTracker(t.data);
+      setSelected((prev) => (l.data.some((x) => x.station._id === prev) ? prev : l.data[0]?.station._id));
+    } catch (error) {
+      setLoadError(error);
+    } finally {
+      setLoading(false);
+    }
   }, [params]);
 
   useEffect(() => {
@@ -107,36 +112,63 @@ export default function Dashboard() {
     [tracker]
   );
 
-  if (!summary) return <Skeleton />;
-  const avgStatus = getStatus(summary.avgWqi);
-  const avgColor = STATUS_COLORS[avgStatus];
+  const showLoader = loading || !introComplete;
+  const readyToReveal = !loading && rotationComplete;
+  const avgStatus = summary ? getStatus(summary.avgWqi) : null;
+  const avgColor = avgStatus ? STATUS_COLORS[avgStatus] : null;
 
   return (
-    <motion.div variants={container} initial="hidden" animate="show" className="space-y-6">
-      {/* Hero banner */}
-      <motion.div variants={item} className="glass-strong glass-hover relative overflow-hidden p-6 sm:p-8">
-        <HudCorners />
-        <div className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-aqua-500/25 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-24 left-1/3 h-56 w-56 rounded-full bg-neon-violet/20 blur-3xl" />
-        <div className="relative flex flex-wrap items-end justify-between gap-6">
-          <div>
-            <span className="chip">
-              <i className={`h-1.5 w-1.5 rounded-full ${connected ? "animate-pulse bg-emerald-400" : "bg-red-400"}`} />
-              {connected ? "Live monitoring" : "Connecting..."}
-            </span>
-            <h1 className="mt-3 text-2xl font-extrabold tracking-tight sm:text-4xl">
-              {greet()}, <span className="text-gradient">{user?.name?.split(" ")[0]}</span>
-            </h1>
-            <p className="mt-2 text-sm text-white/55">
-              Network status: <b style={{ color: avgColor }}>{avgStatus}</b> · last update {lastUpdate ? lastUpdate.toLocaleTimeString() : "waiting for stream..."}
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <Link to="/tracker" className="btn-neon !py-2.5 text-sm"><Crosshair size={16} /> Open tracker</Link>
-            <Link to="/alerts" className="btn-ghost !py-2.5 text-sm"><Bell size={16} /> View alerts</Link>
-          </div>
+    <>
+      <AnimatePresence>
+        {showLoader && (
+          <DashboardLoader
+            key="dashboard-loader"
+            readyToReveal={readyToReveal}
+            onFocusComplete={handleFocusComplete}
+            onComplete={handleLoaderComplete}
+          />
+        )}
+      </AnimatePresence>
+
+      {!showLoader && !summary && (
+        <div className="glass-strong mx-auto max-w-lg p-8 text-center" role="alert">
+          <h1 className="text-xl font-bold">Dashboard data unavailable</h1>
+          <p className="mt-2 text-sm text-white/60">{loadError?.message || "Could not load dashboard data."}</p>
+          <button type="button" className="btn-neon mt-5" onClick={load}>Retry</button>
         </div>
-      </motion.div>
+      )}
+
+      {!showLoader && summary && (
+        <motion.div variants={container} initial="hidden" animate="show" className="space-y-6">
+          {loadError && (
+            <p className="rounded-xl border border-red-300/25 bg-red-400/10 p-4 text-sm text-red-100" role="status">
+              Dashboard data refresh failed: {loadError.message || "Please try again."}
+            </p>
+          )}
+          {/* Hero banner */}
+          <motion.div variants={item} className="glass-strong glass-hover relative overflow-hidden p-6 sm:p-8">
+            <HudCorners />
+            <div className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-aqua-500/25 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-24 left-1/3 h-56 w-56 rounded-full bg-neon-violet/20 blur-3xl" />
+            <div className="relative flex flex-wrap items-end justify-between gap-6">
+              <div>
+                <span className="chip">
+                  <i className={`h-1.5 w-1.5 rounded-full ${connected ? "animate-pulse bg-emerald-400" : "bg-red-400"}`} />
+                  {connected ? "Live monitoring" : "Connecting..."}
+                </span>
+                <h1 className="mt-3 text-2xl font-extrabold tracking-tight sm:text-4xl">
+                  {greet()}, <span className="text-gradient">{user?.name?.split(" ")[0]}</span>
+                </h1>
+                <p className="mt-2 text-sm text-white/55">
+                  Network status: <b style={{ color: avgColor }}>{avgStatus}</b> · last update {lastUpdate ? lastUpdate.toLocaleTimeString() : "waiting for stream..."}
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <Link to="/tracker" className="btn-neon !py-2.5 text-sm"><Crosshair size={16} /> Open tracker</Link>
+                <Link to="/alerts" className="btn-ghost !py-2.5 text-sm"><Bell size={16} /> View alerts</Link>
+              </div>
+            </div>
+          </motion.div>
 
       {/* Stat cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -304,6 +336,8 @@ export default function Dashboard() {
           })}
         </div>
       </motion.div>
-    </motion.div>
+        </motion.div>
+      )}
+    </>
   );
 }

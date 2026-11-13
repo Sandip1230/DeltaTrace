@@ -124,7 +124,7 @@ All routes except `/api/auth/*` and `/api/health` need `Authorization: Bearer <t
 - [X] Stations page (map), Alerts page
 - [X] Source Tracker page
 - [X] Reports page (history and CSV export)
-- [x] Pan-India extension (42 stations, 37 sources, region scope, India overview)
+- [X] Pan-India extension (42 stations, 37 sources, region scope, India overview)
 - [X] Final polish, screenshots, report
 
 ## Team

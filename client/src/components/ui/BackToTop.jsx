@@ -35,17 +35,17 @@ export default function BackToTop({ bottom = 24 }) {
           exit={{ opacity: 0, scale: 0.6, y: 20 }}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.92 }}
-          className="glass-lav fixed right-4 z-40 grid h-[52px] w-[52px] place-items-center rounded-full sm:right-6"
+          className="glass-bar fixed right-4 z-40 grid h-[52px] w-[52px] place-items-center rounded-full sm:right-6"
           style={{ bottom }}
         >
           <svg className="absolute inset-0 -rotate-90" viewBox="0 0 52 52">
-            <circle cx="26" cy="26" r="21" fill="none" stroke="rgba(0,17,77,.15)" strokeWidth="2.5" />
+            <circle cx="26" cy="26" r="21" fill="none" stroke="rgba(219,201,250,.2)" strokeWidth="2.5" />
             <circle
-              cx="26" cy="26" r="21" fill="none" stroke="#0145F2" strokeWidth="3" strokeLinecap="round"
+              cx="26" cy="26" r="21" fill="none" stroke="#7FFF00" strokeWidth="3" strokeLinecap="round"
               strokeDasharray={C} strokeDashoffset={C * (1 - p)}
             />
           </svg>
-          <ArrowUp size={18} className="text-ocean-950" />
+          <ArrowUp size={18} className="text-acid" />
         </motion.button>
       )}
     </AnimatePresence>

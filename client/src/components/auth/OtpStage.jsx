@@ -90,7 +90,7 @@ export default function OtpStage({ value, phase, progress, inputRef, onChange, s
             height={2 * R + 8}
             style={{ position: "absolute", left: "50%", top: "50%", marginLeft: -(R + 4), marginTop: -(R + 4), opacity: ringOpacity }}
           >
-            <circle cx={R + 4} cy={R + 4} r={R} fill="none" stroke="rgba(245,197,66,.4)" strokeWidth="1.5" strokeDasharray="3 7" strokeLinecap="round" />
+            <circle cx={R + 4} cy={R + 4} r={R} fill="none" stroke="rgba(219,201,250,.45)" strokeWidth="1.5" strokeDasharray="3 7" strokeLinecap="round" />
           </motion.svg>
           {value.split("").map((d, i) => (
             <OrbitBox key={i} i={i} digit={d} progress={progress} />
