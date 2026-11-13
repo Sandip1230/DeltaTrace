@@ -47,13 +47,19 @@
   inset: 2%;
   border: 1px solid rgba(119, 202, 255, .68);
   border-radius: 50%;
-  box-shadow: 0 0 18px 5px rgba(38, 151, 255, .48), 0 0 70px 18px rgba(0, 90, 255, .3);
+  box-shadow:
+    0 0 18px 5px rgba(38, 151, 255, .48),
+    0 0 70px 18px rgba(0, 90, 255, .3),
+    0 0 150px 48px rgba(0, 90, 255, .26);
   transform: perspective(900px) rotateX(13deg);
   transition: box-shadow .7s ease;
 }
 
 .dashboard-loader.is-focused .dashboard-loader__atmosphere {
-  box-shadow: 0 0 24px 7px rgba(38, 151, 255, .58), 0 0 86px 24px rgba(0, 90, 255, .4);
+  box-shadow:
+    0 0 24px 7px rgba(38, 151, 255, .58),
+    0 0 90px 30px rgba(0, 90, 255, .4),
+    0 0 190px 64px rgba(0, 90, 255, .34);
 }
 
 .dashboard-loader__earth {
