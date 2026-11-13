@@ -10,27 +10,31 @@ export default function Header({ menuOpen, onMenu }) {
 
   return (
     <header className="sticky top-0 z-30 px-3 pt-3 sm:px-4 sm:pt-4">
-      <div className="glass mx-auto flex max-w-6xl items-center justify-between gap-3 px-3 py-2.5 sm:px-4">
+      <div className="glass-lav mx-auto flex max-w-6xl items-center justify-between gap-3 px-3 py-2.5 sm:px-4">
         <div className="flex items-center gap-3">
           <MenuToggle open={menuOpen} onClick={onMenu} />
           <Link to="/" className="flex items-center gap-2.5">
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-aqua-500/20 text-aqua-300 shadow-[0_0_20px_-4px_#38d5f0]"><Droplets size={20} /></span>
-            <span className="hidden text-lg font-extrabold tracking-tight min-[420px]:block">Delta<span className="text-aqua-400">Trace</span></span>
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-electric text-acid shadow-[0_8px_20px_-6px_#0145F2]">
+              <Droplets size={20} />
+            </span>
+            <span className="hidden text-lg font-extrabold tracking-tight text-ocean-950 min-[420px]:block">
+              Delta<span className="text-electric">Trace</span>
+            </span>
           </Link>
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="chip !py-1.5">
-            <i className={`h-1.5 w-1.5 rounded-full ${connected ? "animate-pulse bg-emerald-400" : "bg-red-400"}`} />
+          <span className="flex items-center gap-2 rounded-full bg-ocean-950 px-3 py-1.5 font-mono text-[11px] font-bold uppercase tracking-wider text-white">
+            <i className={`h-1.5 w-1.5 rounded-full ${connected ? "animate-pulse bg-acid" : "bg-red-400"}`} />
             {connected ? "Live" : "Offline"}
           </span>
-          <button onClick={onMenu} className="flex items-center gap-2.5 rounded-xl py-1 pl-1 pr-1 transition hover:bg-white/8 sm:pr-3">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-aqua-400 to-neon-violet font-bold text-ocean-950">
+          <button onClick={onMenu} className="flex items-center gap-2.5 rounded-xl py-1 pl-1 pr-1 transition hover:bg-electric/10 sm:pr-3">
+            <span className="grid h-9 w-9 place-items-center rounded-xl bg-electric font-bold text-white">
               {user?.name?.[0]?.toUpperCase() || "U"}
             </span>
             <span className="hidden text-left sm:block">
-              <span className="block text-sm font-semibold leading-tight">{user?.name}</span>
-              <span className="block text-xs capitalize text-white/50">{user?.role}</span>
+              <span className="block text-sm font-semibold leading-tight text-ocean-950">{user?.name}</span>
+              <span className="block text-xs capitalize text-ocean-950/60">{user?.role}</span>
             </span>
           </button>
         </div>

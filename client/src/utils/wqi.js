@@ -1,9 +1,9 @@
 export const STATUS_COLORS = {
-  Excellent: "#34d399",
-  Good: "#38d5f0",
-  Poor: "#facc15",
-  "Very Poor": "#fb923c",
-  Unfit: "#f87171",
+  Excellent: "#7FFF00",
+  Good: "#DBC9FA",
+  Poor: "#FFD60A",
+  "Very Poor": "#FF9F43",
+  Unfit: "#FF5C8A",
 };
 
 export const PARAMS = [

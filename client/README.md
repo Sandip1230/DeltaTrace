@@ -1,4 +1,3 @@
-
 # DeltaTrace
 
 **Autonomous Water Quality Assessment & Effluent Source Identification**
@@ -7,7 +6,18 @@ A MERN-stack dashboard that monitors river and canal stations, computes a Water 
 > CAA Project, JIS Group, 3rd Sem CSE 2026-27 (Project ID: RI_003)
 > Uses hardcoded and simulated sensor data (no physical sensors needed).
 
----
+
+## Design System (60-30-10)
+
+| Share | Colour                    | Used for                                                                            |
+| ----- | ------------------------- | ----------------------------------------------------------------------------------- |
+| 60%   | Electric blue `#0145F2` | Backgrounds and glass surfaces                                                      |
+| 30%   | Soft lavender `#DBC9FA` | Header, nav, scope bar, tints, borders, secondary text, data lines                  |
+| 10%   | Acid green `#7FFF00`    | Buttons, active and selected states, live indicator, hover glow, "Excellent" status |
+
+WQI status colours (Excellent, Good, Poor, Very Poor, Unfit) stay distinct for readability.
+
+
 
 ## Features
 

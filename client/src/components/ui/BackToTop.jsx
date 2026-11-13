@@ -35,17 +35,17 @@ export default function BackToTop({ bottom = 24 }) {
           exit={{ opacity: 0, scale: 0.6, y: 20 }}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.92 }}
-          className="glass glass-hover fixed right-4 z-40 grid h-[52px] w-[52px] place-items-center rounded-full text-aqua-300 sm:right-6"
+          className="glass-lav fixed right-4 z-40 grid h-[52px] w-[52px] place-items-center rounded-full sm:right-6"
           style={{ bottom }}
         >
           <svg className="absolute inset-0 -rotate-90" viewBox="0 0 52 52">
-            <circle cx="26" cy="26" r="21" fill="none" stroke="rgba(255,255,255,.1)" strokeWidth="2.5" />
+            <circle cx="26" cy="26" r="21" fill="none" stroke="rgba(0,17,77,.15)" strokeWidth="2.5" />
             <circle
-              cx="26" cy="26" r="21" fill="none" stroke="#38d5f0" strokeWidth="2.5" strokeLinecap="round"
-              strokeDasharray={C} strokeDashoffset={C * (1 - p)} style={{ filter: "drop-shadow(0 0 4px #38d5f0)" }}
+              cx="26" cy="26" r="21" fill="none" stroke="#0145F2" strokeWidth="3" strokeLinecap="round"
+              strokeDasharray={C} strokeDashoffset={C * (1 - p)}
             />
           </svg>
-          <ArrowUp size={18} />
+          <ArrowUp size={18} className="text-ocean-950" />
         </motion.button>
       )}
     </AnimatePresence>
@@ -56,7 +56,7 @@ export function ScrollProgress() {
   const { scrollYProgress } = useScroll();
   return (
     <motion.div
-      className="fixed inset-x-0 top-0 z-[60] h-[3px] origin-left bg-gradient-to-r from-aqua-400 via-neon-violet to-neon-pink"
+      className="fixed inset-x-0 top-0 z-[60] h-[3px] origin-left bg-gradient-to-r from-lav via-white to-acid"
       style={{ scaleX: scrollYProgress }}
     />
   );

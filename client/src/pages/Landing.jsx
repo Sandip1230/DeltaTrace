@@ -178,11 +178,11 @@ export default function Landing() {
       {/* Stats strip */}
       <section className="mx-auto max-w-6xl px-4">
         <Reveal>
-          <div className="glass grid grid-cols-2 gap-6 p-6 text-center sm:p-8 lg:grid-cols-4">
-            {[[7, "Water parameters", 0, ""], [42, "Stations across India", 0, ""], [8, "Source fingerprints", 0, ""], [15, "Seconds per live update", 0, "s"]].map(([n, l, d, s]) => (
+          <div className="glass-lav grid grid-cols-2 gap-6 p-6 text-center sm:p-8 lg:grid-cols-4">
+            {[[7, "Water parameters", 0, ""], [42, "Stations across India", 0, ""], [8, "Source fingerprints", 0, ""], [15, "Seconds per live update", 0, "s"]].map(([n, l, d, sfx]) => (
               <div key={l}>
-                <p className="text-4xl font-extrabold text-aqua-300 sm:text-5xl"><CountUp to={n} decimals={d} suffix={s} /></p>
-                <p className="mt-1 font-mono text-[11px] uppercase tracking-widest text-white/50">{l}</p>
+                <p className="text-4xl font-extrabold text-electric sm:text-5xl"><CountUp to={n} decimals={d} suffix={sfx} /></p>
+                <p className="mt-1 font-mono text-[11px] font-bold uppercase tracking-widest text-ocean-950/70">{l}</p>
               </div>
             ))}
           </div>
