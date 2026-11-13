@@ -20,7 +20,7 @@ export default function DashboardLoader({ readyToReveal, onFocusComplete, onComp
       setFocused(true);
       setMessageIndex(MESSAGES.length - 1);
       onFocusComplete();
-    }, reducedMotion ? 0 : 4000);
+    }, reducedMotion ? 0 : 12000);
     return () => window.clearTimeout(focusTimer);
   }, [onFocusComplete]);
 
@@ -52,7 +52,11 @@ export default function DashboardLoader({ readyToReveal, onFocusComplete, onComp
           <div className="dashboard-loader__orbit" />
           <div className="dashboard-loader__atmosphere">
             <div className="dashboard-loader__earth">
-              <img className="dashboard-loader__surface" src="/earth-borders.svg" alt="" draggable="false" />
+              <div className="dashboard-loader__surface">
+                {Array.from({ length: 4 }, (_, index) => (
+                  <img key={index} src="/earth-borders.svg" alt="" draggable="false" />
+                ))}
+              </div>
               <div className="dashboard-loader__shade" />
             </div>
           </div>

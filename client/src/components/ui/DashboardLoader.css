@@ -48,6 +48,7 @@
   border: 1px solid rgba(119, 202, 255, .68);
   border-radius: 50%;
   box-shadow: 0 0 18px 5px rgba(38, 151, 255, .48), 0 0 70px 18px rgba(0, 90, 255, .3);
+  transform: perspective(900px) rotateX(13deg);
   transition: box-shadow .7s ease;
 }
 
@@ -70,11 +71,20 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 400%;
+  display: flex;
+  width: 1600%;
   height: 100%;
-  max-width: none;
   user-select: none;
-  animation: dashboard-earth-spin 4s cubic-bezier(.45, 0, .18, 1) forwards;
+  animation: dashboard-earth-spin 12s cubic-bezier(.45, 0, .18, 1) forwards;
+}
+
+.dashboard-loader__surface img {
+  width: 25%;
+  max-width: none;
+  height: 100%;
+  flex: none;
+  object-fit: fill;
+  user-select: none;
 }
 
 .dashboard-loader__shade {
@@ -135,8 +145,8 @@
 }
 
 @keyframes dashboard-earth-spin {
-  from { transform: translate(-12.5%, 0); }
-  to { transform: translate(-73.3333%, 12.2%); }
+  from { transform: translate(-3.125%, 0); }
+  to { transform: translate(-55.8333%, 12.2%); }
 }
 
 @keyframes dashboard-earth-zoom {
