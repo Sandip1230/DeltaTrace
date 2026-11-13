@@ -14,6 +14,10 @@ const tip = {
   contentStyle: { background: "rgba(6,34,53,.92)", border: "1px solid rgba(255,255,255,.15)", borderRadius: 12, color: "#fff" },
   labelStyle: { color: "#7ee8fa" },
 };
+const cartoApiKey = import.meta.env.VITE_CARTO_API_KEY;
+const mapTileUrl = cartoApiKey
+  ? `https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png?key=${cartoApiKey}`
+  : "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
 const confColor = (c) => (c >= 70 ? "#f87171" : c >= 50 ? "#fb923c" : c >= 35 ? "#facc15" : "#94a3b8");
 const pick = (reading) => Object.fromEntries(PARAMS.map((p) => [p.key, reading[p.key]]));
 
@@ -216,7 +220,7 @@ export default function Tracker() {
 
             <div className="glass map-wrap" style={{ minHeight: 300 }}>
               <MapContainer center={[station.location.lat, station.location.lng]} zoom={11} style={{ height: "100%", minHeight: 300, width: "100%" }}>
-                <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" attribution="&copy; OpenStreetMap &copy; CARTO" />
+                <TileLayer url={mapTileUrl} attribution="&copy; OpenStreetMap &copy; CARTO" />
                 <FitBounds points={mapPoints} />
 
                 {analysis.results.slice(0, 3).map((r, i) => (
