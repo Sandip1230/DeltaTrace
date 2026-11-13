@@ -7,7 +7,9 @@ import api from "../api/axios";
 import { useLive } from "../context/LiveContext";
 import { useScope } from "../context/ScopeContext";
 import StatusBadge from "../components/ui/StatusBadge";
+import IndiaBoundaries from "../components/maps/IndiaBoundaries";
 import { PARAMS, STATUS_COLORS } from "../utils/wqi";
+import { CARTO_TILE_URL } from "../utils/mapTiles";
 import { timeAgo } from "../utils/format";
 
 function FlyTo({ lat, lng }) {
@@ -75,11 +77,12 @@ export default function Stations() {
       <div className="grid gap-4 lg:grid-cols-3">
         {/* Map */}
         <div className="glass map-wrap lg:col-span-2" style={{ height: 430 }}>
-          <MapContainer center={[22.8, 80]} zoom={5} style={{ height: "100%", width: "100%" }}>
+          <MapContainer className="dt-map" center={[22.8, 80]} zoom={5} style={{ height: "100%", width: "100%" }}>
             <TileLayer
-              url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-              attribution="&copy; OpenStreetMap &copy; CARTO"
+              url={CARTO_TILE_URL}
+              attribution="&copy; OpenStreetMap &copy; CARTO &copy; Natural Earth"
             />
+            <IndiaBoundaries />
             <FlyTo lat={selected?.station.location.lat} lng={selected?.station.location.lng} />
 
             {showSources &&

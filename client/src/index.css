@@ -205,7 +205,11 @@ body {
 /* ---------- Leaflet ---------- */
 .map-wrap { isolation: isolate; overflow: hidden; border-radius: 1.25rem; }
 .leaflet-container { background: #050d33; font-family: inherit; }
-.leaflet-tile-pane { filter: sepia(1) hue-rotate(195deg) saturate(2.4) brightness(0.85); }
+.leaflet-tile-pane { filter: brightness(.62) saturate(.72) sepia(.35) hue-rotate(174deg); }
+.dt-map::after {
+  content: ""; position: absolute; inset: 0; z-index: 350; pointer-events: none;
+  background: rgba(3, 14, 42, .38); mix-blend-mode: multiply;
+}
 .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: rgba(5, 13, 51, 0.97); color: #e6e1f7; border: 1px solid rgba(219, 201, 250, 0.3); }
 .leaflet-container a.leaflet-popup-close-button { color: #fff; }
 .leaflet-tooltip { background: rgba(5, 13, 51, 0.97); color: #fff; border: 1px solid rgba(219, 201, 250, 0.35); box-shadow: none; }

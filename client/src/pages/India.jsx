@@ -10,7 +10,9 @@ import { useLive } from "../context/LiveContext";
 import { useScope } from "../context/ScopeContext";
 import StatCard from "../components/ui/StatCard";
 import StatusBadge from "../components/ui/StatusBadge";
+import IndiaBoundaries from "../components/maps/IndiaBoundaries";
 import { STATUS_COLORS } from "../utils/wqi";
+import { CARTO_TILE_URL } from "../utils/mapTiles";
 
 const tip = {
   contentStyle: { background: "rgba(6,26,43,.92)", border: "1px solid rgba(56,213,240,.3)", borderRadius: 12, color: "#fff" },
@@ -76,8 +78,9 @@ export default function India() {
 
       {/* Map */}
       <div className="glass map-wrap relative" style={{ height: 500 }}>
-        <MapContainer center={[22.8, 80]} zoom={5} minZoom={4} scrollWheelZoom={false} style={{ height: "100%", width: "100%" }}>
-          <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" attribution="&copy; OpenStreetMap &copy; CARTO" />
+        <MapContainer className="dt-map" center={[22.8, 80]} zoom={5} minZoom={4} scrollWheelZoom={false} style={{ height: "100%", width: "100%" }}>
+          <TileLayer url={CARTO_TILE_URL} attribution="&copy; OpenStreetMap &copy; CARTO &copy; Natural Earth" />
+          <IndiaBoundaries />
           {data.stations.map((s) => {
             const c = STATUS_COLORS[s.status];
             return (
