@@ -1,5 +1,6 @@
 # DeltaTrace
 
+
 **Autonomous Water Quality Assessment & Effluent Source Identification**
 A MERN-stack dashboard that monitors river and canal stations, computes a Water Quality Index (WQI), raises threshold alerts, and traces pollution spikes back to likely effluent sources.
 
@@ -28,6 +29,7 @@ A MERN-stack dashboard that monitors river and canal stations, computes a Water 
 - **Database:** MongoDB with Mongoose
 - **Realtime:** Server-Sent Events (EventSource)
 
+
 ## Project Structure
 
 ```
@@ -50,10 +52,8 @@ npm run install-all
 # 2. Configure the server
 cp server/.env.example server/.env   # then fill in the values below
 
-
 # 3. Seed the database (stations, sources, readings, alerts, demo users)
 npm run seed --prefix server
-
 
 # 4. Run client and server together
 npm run dev
