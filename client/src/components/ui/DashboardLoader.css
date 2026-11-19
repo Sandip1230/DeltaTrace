@@ -25,6 +25,7 @@
 }
 
 .dashboard-loader__scene {
+  
   position: relative;
   width: clamp(220px, 50vmin, 560px);
   aspect-ratio: 1;
